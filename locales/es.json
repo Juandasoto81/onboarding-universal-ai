@@ -1,0 +1,7 @@
+{
+  "welcome": "👋 ¡Hola! Bienvenido al proceso de verificación.",
+  "choose_method": "¿Cómo prefieres empezar?",
+  "google": "Iniciar sesión con Google",
+  "otp_email": "Verificar correo con código",
+  "otp_phone": "Verificar tu número celular"
+}

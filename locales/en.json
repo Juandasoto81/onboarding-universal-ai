@@ -1,0 +1,7 @@
+{
+  "welcome": "👋 Welcome to the verification process.",
+  "choose_method": "How would you like to begin?",
+  "google": "Sign in with Google",
+  "otp_email": "Verify email with code",
+  "otp_phone": "Verify your phone number"
+}
