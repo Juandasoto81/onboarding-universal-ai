@@ -1,56 +1,125 @@
 import React, { useState } from "react";
-import "./AgentChat.css";
 
-function AgentChat() {
+const AgentChat = () => {
   const [messages, setMessages] = useState([
     {
-      from: "agent",
+      from: "bot",
       text: "👋 Hola, soy tu asistente virtual. ¿En qué idioma prefieres continuar?",
-      options: ["Español", "English"],
     },
   ]);
   const [input, setInput] = useState("");
+  const [step, setStep] = useState("language"); // Paso actual
+  const [userData, setUserData] = useState({});
 
-  const handleUserInput = (e) => {
-    e.preventDefault();
+  const sendMessage = () => {
+    const trimmed = input.trim();
+    if (!trimmed) return;
 
-    if (!input.trim()) return;
-
-    // Agrega el mensaje del usuario
-    setMessages((prev) => [...prev, { from: "user", text: input }]);
-
-    // Limpiar campo
+    setMessages([...messages, { from: "user", text: trimmed }]);
     setInput("");
 
-    // Aquí irá la lógica del agente más adelante
+    setTimeout(() => {
+      handleStep(trimmed);
+    }, 500);
+  };
+
+  const handleStep = (value) => {
+    switch (step) {
+      case "language":
+        setMessages((prev) => [
+          ...prev,
+          {
+            from: "bot",
+            text: "✅ Perfecto. Empecemos con tu nombre completo.",
+          },
+        ]);
+        setStep("name");
+        break;
+
+      case "name":
+        setUserData((prev) => ({ ...prev, name: value }));
+        setMessages((prev) => [
+          ...prev,
+          {
+            from: "bot",
+            text: `Gracias, ${value}. ¿Cuál es tu correo electrónico?`,
+          },
+        ]);
+        setStep("email");
+        break;
+
+      case "email":
+        setUserData((prev) => ({ ...prev, email: value }));
+        // Aquí simulamos envío OTP
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        localStorage.setItem("mockOTP", otp); // Para simular
+        setMessages((prev) => [
+          ...prev,
+          {
+            from: "bot",
+            text: `📨 Te envié un código OTP a ${value} (simulado: ${otp}). Escríbelo aquí para continuar.`,
+          },
+        ]);
+        setStep("otp");
+        break;
+
+      case "otp":
+        const correctOTP = localStorage.getItem("mockOTP");
+        if (value === correctOTP) {
+          setMessages((prev) => [
+            ...prev,
+            { from: "bot", text: "✅ Verificación completada. ¡Bienvenido!" },
+          ]);
+          setStep("done");
+        } else {
+          setMessages((prev) => [
+            ...prev,
+            { from: "bot", text: "❌ Código incorrecto. Intenta nuevamente." },
+          ]);
+        }
+        break;
+
+      default:
+        break;
+    }
   };
 
   return (
-    <div className="chat-container">
-      <div className="chat-box">
-        {messages.map((msg, idx) => (
-          <div
-            key={idx}
-            className={msg.from === "agent" ? "message agent-message" : "message user-message"}
-          >
-            {msg.text}
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="h-96 overflow-y-auto p-4 space-y-2">
+          {messages.map((msg, idx) => (
+            <div
+              key={idx}
+              className={`p-3 rounded-lg text-sm ${
+                msg.from === "bot"
+                  ? "bg-blue-100 text-blue-800 self-start"
+                  : "bg-green-100 text-green-800 self-end"
+              }`}
+            >
+              {msg.text}
+            </div>
+          ))}
+        </div>
+        {step !== "done" && (
+          <div className="flex p-3 border-t">
+            <input
+              className="flex-1 border border-gray-300 rounded-lg px-3 py-2 mr-2 text-sm"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Escribe aquí..."
+            />
+            <button
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm"
+              onClick={sendMessage}
+            >
+              Enviar
+            </button>
           </div>
-        ))}
+        )}
       </div>
-      <form onSubmit={handleUserInput} className="chat-form">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Escribe tu respuesta..."
-          className="chat-input"
-        />
-        <button type="submit" className="chat-button">
-          Enviar
-        </button>
-      </form>
     </div>
   );
-}
+};
 
 export default AgentChat;
