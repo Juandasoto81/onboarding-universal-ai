@@ -16,3 +16,15 @@ ignorePorts = false
 [[ports]]
 localPort = 3000
 externalPort = 80
+
+[workflows]
+runButton = "Start React Dev Server"
+
+[[workflows.workflow]]
+name = "Start React Dev Server"
+author = 44586067
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd client && npm run dev"
