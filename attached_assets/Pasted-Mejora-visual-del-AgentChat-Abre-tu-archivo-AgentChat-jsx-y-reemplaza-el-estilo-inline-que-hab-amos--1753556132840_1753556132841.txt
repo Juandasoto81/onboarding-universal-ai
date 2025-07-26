@@ -1,0 +1,78 @@
+Mejora visual del AgentChat
+Abre tu archivo AgentChat.jsx y reemplaza el estilo inline que habíamos usado, por clases de TailwindCSS o un CSS más legible. Aquí te va una versión refinada con estilos:
+
+jsx
+Copiar
+Editar
+import React, { useState } from 'react';
+
+const AgentChat = () => {
+  const [messages, setMessages] = useState([
+    { from: 'bot', text: '👋 Hola, soy tu asistente virtual. ¿En qué idioma prefieres continuar?' }
+  ]);
+
+  const [input, setInput] = useState('');
+
+  const sendMessage = () => {
+    if (!input.trim()) return;
+
+    setMessages([...messages, { from: 'user', text: input }]);
+    setInput('');
+
+    // Aquí va la lógica del siguiente paso después del idioma
+    setTimeout(() => {
+      setMessages((prev) => [
+        ...prev,
+        { from: 'bot', text: '✅ Perfecto. Empecemos con tu nombre completo.' }
+      ]);
+    }, 500);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="h-96 overflow-y-auto p-4 space-y-2">
+          {messages.map((msg, idx) => (
+            <div
+              key={idx}
+              className={`p-3 rounded-lg text-sm ${
+                msg.from === 'bot'
+                  ? 'bg-blue-100 text-blue-800 self-start'
+                  : 'bg-green-100 text-green-800 self-end'
+              }`}
+            >
+              {msg.text}
+            </div>
+          ))}
+        </div>
+        <div className="flex p-3 border-t">
+          <input
+            className="flex-1 border border-gray-300 rounded-lg px-3 py-2 mr-2 text-sm"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Escribe aquí..."
+          />
+          <button
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm"
+            onClick={sendMessage}
+          >
+            Enviar
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AgentChat;
+🧪 Resultado
+Esto te dará:
+
+Fondo claro (gris claro)
+
+Burbujas de mensajes azules (bot) y verdes (usuario)
+
+Caja de entrada limpia
+
+Responsive y legible
+
