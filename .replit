@@ -22,7 +22,7 @@ localPort = 5000
 externalPort = 5000
 
 [workflows]
-runButton = "Start React Dev Server"
+runButton = "Next.js Dev Server"
 
 [[workflows.workflow]]
 name = "Start React Dev Server"
@@ -32,3 +32,16 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "cd client && npm run dev"
+
+[[workflows.workflow]]
+name = "Next.js Dev Server"
+author = 44586067
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm install"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
