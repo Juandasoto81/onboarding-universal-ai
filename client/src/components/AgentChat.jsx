@@ -15,13 +15,17 @@ const AgentChat = () => {
 
   const handleOption = (option) => {
     if (option === "SSO") {
-      addMessage(
-        "agent",
-        "Por favor haz clic en el botón de tu proveedor preferido 👇",
-      );
+      addMessage("agent", "Redirigiendo a Google / GitHub...");
       setStep("sso");
+
+      // Simulación de fallo o no uso del SSO
+      setTimeout(() => {
+        addMessage("agent", "Parece que no se completó el inicio por SSO.");
+        addMessage("agent", "Vamos a intentarlo por correo.");
+        setStep("email");
+      }, 2000);
     } else {
-      addMessage("agent", "Perfecto, por favor ingresa tu correo electrónico:");
+      addMessage("agent", "Por favor ingresa tu correo electrónico:");
       setStep("email");
     }
   };
@@ -30,39 +34,42 @@ const AgentChat = () => {
     addMessage("user", email);
     addMessage(
       "agent",
-      `Te he enviado un código a ${email}. Ingrésalo para continuar.`,
+      `Te hemos enviado un código a ${email}. Ingrésalo para continuar.`,
     );
     setStep("otpEmail");
   };
 
   const handleOtpEmailSubmit = () => {
     addMessage("user", otpEmail);
-    addMessage("agent", "¡Validado! Ahora ingresa tu número de celular.");
+    addMessage("agent", "✅ Correo verificado. Ahora, ingresa tu número celular:");
     setStep("phone");
   };
 
   const handlePhoneSubmit = () => {
     addMessage("user", phone);
-    addMessage("agent", `Te enviamos un código por SMS a ${phone}.`);
+    addMessage("agent", `📲 Te hemos enviado un código SMS a ${phone}.`);
     setStep("otpPhone");
   };
 
   const handleOtpPhoneSubmit = () => {
     addMessage("user", otpPhone);
-    addMessage("agent", "✅ Verificación completada con éxito.");
+    addMessage("agent", "🎉 Verificación completada con éxito. Bienvenido al sistema.");
     setStep("completado");
   };
 
   return (
     <div style={{ padding: 20 }}>
       <h2>Agente AI - Onboarding</h2>
+
       <div
         style={{
-          background: "#f4f4f4",
+          background: "#ffffff",
+          color: "#333",
           padding: 10,
           borderRadius: 10,
           height: 300,
           overflowY: "auto",
+          border: "1px solid #ccc",
         }}
       >
         {messages.map((m, i) => (
@@ -70,7 +77,7 @@ const AgentChat = () => {
             key={i}
             style={{
               textAlign: m.from === "agent" ? "left" : "right",
-              margin: 5,
+              margin: "8px 0",
             }}
           >
             <strong>{m.from === "agent" ? "🤖 Sofi:" : "🙋‍♂️ Tú:"}</strong>{" "}
@@ -79,58 +86,72 @@ const AgentChat = () => {
         ))}
       </div>
 
+      {/* Opciones iniciales */}
       {step === "inicio" && (
-        <div style={{ marginTop: 10 }}>
+        <div style={{ marginTop: 15 }}>
           <button onClick={() => handleOption("SSO")}>
             Ingresar con Google / GitHub
           </button>
-          <button onClick={() => handleOption("email")}>
-            Ingresar con correo electrónico
+          <br />
+          <button onClick={() => handleOption("email")} style={{ marginTop: 10 }}>
+            Usar correo electrónico
           </button>
         </div>
       )}
 
+      {/* Paso: Correo */}
       {step === "email" && (
-        <div style={{ marginTop: 10 }}>
+        <div style={{ marginTop: 15 }}>
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Correo electrónico"
           />
-          <button onClick={handleEmailSubmit}>Enviar OTP</button>
+          <button onClick={handleEmailSubmit} style={{ marginLeft: 10 }}>
+            Enviar código
+          </button>
         </div>
       )}
 
+      {/* Paso: OTP Correo */}
       {step === "otpEmail" && (
-        <div style={{ marginTop: 10 }}>
+        <div style={{ marginTop: 15 }}>
           <input
             value={otpEmail}
             onChange={(e) => setOtpEmail(e.target.value)}
-            placeholder="Código OTP"
+            placeholder="Código del correo"
           />
-          <button onClick={handleOtpEmailSubmit}>Validar</button>
+          <button onClick={handleOtpEmailSubmit} style={{ marginLeft: 10 }}>
+            Confirmar código
+          </button>
         </div>
       )}
 
+      {/* Paso: Celular */}
       {step === "phone" && (
-        <div style={{ marginTop: 10 }}>
+        <div style={{ marginTop: 15 }}>
           <input
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            placeholder="Número de celular"
+            placeholder="Número celular"
           />
-          <button onClick={handlePhoneSubmit}>Enviar OTP</button>
+          <button onClick={handlePhoneSubmit} style={{ marginLeft: 10 }}>
+            Enviar código
+          </button>
         </div>
       )}
 
+      {/* Paso: OTP Celular */}
       {step === "otpPhone" && (
-        <div style={{ marginTop: 10 }}>
+        <div style={{ marginTop: 15 }}>
           <input
             value={otpPhone}
             onChange={(e) => setOtpPhone(e.target.value)}
             placeholder="Código SMS"
           />
-          <button onClick={handleOtpPhoneSubmit}>Validar</button>
+          <button onClick={handleOtpPhoneSubmit} style={{ marginLeft: 10 }}>
+            Confirmar código
+          </button>
         </div>
       )}
     </div>
