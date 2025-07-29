@@ -1,10 +1,41 @@
 
-# Logs
-logs
-*.log
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Node.js
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Logs
+logs
+*.log
 lerna-debug.log*
 .pnpm-debug.log*
 
@@ -130,8 +161,9 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# Replit debugger
-.breakpoints
+# OS
+.DS_Store
+Thumbs.db
 
 # VS Code
 .vscode/
@@ -143,5 +175,5 @@ dist
 # Jupyter
 .ipynb_checkpoints
 
-# Replit
-.replit
+# Replit debugger
+.breakpoint
