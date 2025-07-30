@@ -1,7 +1,15 @@
+import * as React from 'react';
+import Head from 'next/head';
+import { CssBaseline } from '@mui/material';
 
-// pages/_app.js
-import '../styles/globals.css';
-
-export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+export default function MyApp({ Component, pageProps }) {
+  return (
+    <>
+      <Head>
+        <title>Onboarding AI</title>
+      </Head>
+      <CssBaseline />
+      <Component {...pageProps} />
+    </>
+  );
 }
