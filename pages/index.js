@@ -1,3 +1,4 @@
+
 // pages/index.js
 import AgentChat from '@/components/AgentChat';
 
